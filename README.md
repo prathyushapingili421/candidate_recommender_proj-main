@@ -53,7 +53,7 @@ candidate_recommender/
 
 ##  Installation & Setup
 
-### 1️ Clone the Repository
+### 1 Clone the Repository
 git clone 
 cd candidate_recommender
 
