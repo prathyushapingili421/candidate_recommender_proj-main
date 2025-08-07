@@ -55,10 +55,14 @@ if st.button("Run Recommendation Engine"):
         resume_data = sorted(resume_data, key=lambda x: x["score"], reverse=True)
 
         # Step 5: Display results
-        st.write("### Top Matches")
+        st.write("### Top Matching Candidates:")
         for candidate in resume_data[:10]:
-            with st.expander(f"📄 {candidate['name']} — Similarity: {candidate['score']}%"):
-                st.markdown("**Why this candidate is a good fit:**")
-                summary = generate_fit_summary(job_description, candidate["text"])
-                st.write(summary)
+            if candidate["score"] > 50:
+                with st.expander(f"📄 {candidate['name']} --> Similarity: {candidate['score']}%"):
+                    st.markdown("**Why this candidate is a good fit:**")
+                    summary = generate_fit_summary(job_description, candidate["text"])
+                    st.write(summary)
+            else:
+                st.write(f" Skipped **{candidate['name']}** --> Similarity too low ({candidate['score']}%) to access good fit summary.")
+
 
