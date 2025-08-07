@@ -105,7 +105,7 @@ Once you upload the resumes and paste the job description:
 - OCR support for scanned resumes
 - Possibly add login/auth for private team use
 
-### Author: ## Prathyusha Pingili
+### Author: ## Prathyusha Pingili ##
 ### GitHub: https://github.com/prathyushapingili421/candidate_recommender_proj-main
 ### Deployed streamlit app: https://candidaterecommenderproj-main-9ptjt3e4dh5vqzwrtaxffg.streamlit.app/
 ---
