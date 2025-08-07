@@ -1,109 +1,112 @@
-# 📄 Candidate Recommendation Engine
+# Candidate Recommendation Engine
 
-A simple **Streamlit-based web app** that recommends the most relevant candidates for a job based on **semantic similarity** between a job description and uploaded resumes.
+This is a Streamlit app I built to help recommend the most relevant candidates for a job, based on how well their resumes match a job description. It uses NLP embeddings to calculate similarity scores and also generates short AI summaries explaining why each candidate is a good fit.
 
-The app:
-- Accepts a **job description** (text input)
-- Accepts **candidate resumes** (PDF, DOCX, TXT)
-- Extracts text from resumes
-- Generates **embeddings** using Sentence Transformers
-- Computes **cosine similarity** between the job description and each resume
-- Displays the **Top 5–10 most relevant candidates** with similarity scores
-- *(Bonus – Optional)* Generates AI summaries explaining **why each candidate is a good fit**.
-
----
-
-##  Features
-- **Multi-file upload** (PDF, DOCX, TXT)
-- **Resume parsing** (PyPDF2, docx2txt)
-- **Semantic matching** using `sentence-transformers`
-- **Cosine similarity ranking**
-- **Top matches display**
-- *(Optional)* AI-generated fit summaries using OpenAI GPT models
+### What it does:
+- Accepts a job description (text input)
+- Lets you upload resumes (PDF, DOCX, TXT)
+- Extracts and parses resume text
+- Converts both the job description and resumes into embeddings
+- Computes cosine similarity to rank candidates
+- Shows the top matches (only those above 50% similarity)
+- Uses OpenAI to generate a short fit summary for each top candidate
 
 ---
 
-##  Tech Stack
-| Component          | Technology Used |
-|--------------------|-----------------|
-| Frontend + Backend | [Streamlit](https://streamlit.io) |
-| Embeddings         | [Sentence Transformers](https://www.sbert.net) – `all-MiniLM-L6-v2` |
-| Similarity         | scikit-learn (`cosine_similarity`) |
-| File Parsing       | PyPDF2, docx2txt |
-| AI Summaries (Bonus) | OpenAI GPT models |
+## Features
+- Multiple file upload (PDF, DOCX, TXT)
+- Resume parsing using PyPDF2 and docx2txt
+- Semantic similarity using Sentence Transformers (`all-MiniLM-L6-v2`)
+- Cosine similarity ranking
+- GPT-generated summaries for top candidates
+- Streamlit UI for ease of use
 
 ---
 
-##  Project Structure
+## Tech Stack
+
+- Streamlit (frontend + backend)
+- Sentence Transformers (`all-MiniLM-L6-v2`)
+- Scikit-learn (`cosine_similarity`)
+- PyPDF2, docx2txt (file parsing)
+- OpenAI API (for generating summaries)
+- Deployed on Streamlit Cloud
+
+---
+
+## Project Structure
+
 candidate_recommender/
-├── app.py # Main Streamlit app
-├── requirements.txt # Project dependencies
-├── utils/
-│ ├── init.py
-│ ├── file_parser.py # Resume text extraction
-│ ├── embeddings.py # Embedding generation
-│ ├── similarity.py # Similarity computation
-│ └── summarizer.py # AI fit summary (optional)
-├── sample_resumes/ # Test resumes
-├── .env # API keys (if using OpenAI)
-└── README.md
+- ├── app.py # Main Streamlit app
+- ├── requirements.txt # Python dependencies
+- ├── .streamlit/
+- │  └── secrets.toml # Used for OpenAI API key on Streamlit Cloud
+- ├── utils/
+- │ ├── file_parser.py # Resume parsing
+- │ ├── embeddings.py # Embedding logic
+- │ ├── similarity.py # Cosine similarity
+- │ └── summarizer.py # GPT summaries
+- ├── sample_resumes/ # Example resumes
+- ├── .env # Local secret key file (not uploaded)
+- └── README.md
 
 
 ---
 
-##  Installation & Setup
+## How to Run Locally
 
-### 1 Clone the Repository
-git clone 
-cd candidate_recommender
+1. Clone the repo  
+```bash
+git clone https://github.com/prathyushapingili421/candidate_recommender_proj-main.git
+cd candidate_recommender_proj-main
+```
+2. Create a virtual environment
+ ```bash
+   python -m venv venv
+```
+3. Activate it
+```bash
+  - Windows: venv\Scripts\activate
+  - Mac/Linux: source venv/bin/activate
+```
+4. Install dependencies
+```bash
+  pip install -r requirements.txt
+```
+5. Add your OpenAI API key in a .env file
+```bash
+   open_api_key=your_key_here
+   ```
+6. Run the app
+```bash
+    streamlit run app.py
+```
+### How to Deploy on Streamlit Cloud
+- Push your project to GitHub (don’t include .env)
+- Go to https://streamlit.io/cloud and create a new app
+- Point it to your GitHub repo and app.py file
+- Under the Secrets tab, add:
+    ```bash
+    open_api_key = "your_key_here"
+    ```
+- Deploy and share the link
 
-### 2 Create a Virtual Environment
-python -m venv venv
-Activate it:
-Windows: venv\Scripts\activate
-Mac/Linux: source venv/bin/activate
+### How it works
+Once you upload the resumes and paste the job description:
+  - It reads and parses all the files
+  - Uses Sentence Transformers to create embeddings
+  - Compares each resume with the job description using cosine similarity
+  - Ranks the resumes based on score
+  - For the ones scoring above 50%, it uses GPT to summarize why the candidate is a good fit
 
-### 3 Install Dependencies
-pip install -r requirements.txt
+### Improvements I'd like to make later
+- CSV export of the top candidates
+- Highlight matching skills/keywords
+- OCR support for scanned resumes
+- Possibly add login/auth for private team use
 
-### 4  Set Up OpenAI API Key
-If you want AI-generated summaries:
-Place you open_api_key in the .env file:
-OPENAI_API_KEY=your_openai_api_key_here
+### Author: ## Prathyusha Pingili
+### GitHub: https://github.com/prathyushapingili421/candidate_recommender_proj-main
+### Deployed streamlit app: https://candidaterecommenderproj-main-9ptjt3e4dh5vqzwrtaxffg.streamlit.app/
+---
 
-### Running the App
-streamlit run app.py
-The app will open in your browser at:
-http://localhost:8501
-
-### How It Works
-Upload resumes (PDF, DOCX, TXT).
-
-Paste job description.
-
-Click Run Recommendation Engine.
-
-The app:
-
-Extracts text from resumes
-
-Generates embeddings for the job description & resumes
-
-Computes similarity scores
-
-Ranks candidates from highest to lowest match
-
-(Optional) Generates AI summaries of why the candidate fits
-
-### Future Improvements
-Skill keyword highlighting
-
-PDF scanning with OCR for scanned resumes
-
-Batch processing for large datasets
-
-Export results as CSV or Excel
-
-
-### Author
-Prathyusha Pingili
