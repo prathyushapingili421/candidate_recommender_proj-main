@@ -1,10 +1,9 @@
 #AI Summarizer
 import os
 from openai import OpenAI
-from dotenv import load_dotenv
+import streamlit as st
 
-load_dotenv()
-api_key = os.getenv("open_api_key")
+api_key = st.secrets["open_api_key"]
 client = OpenAI(api_key=api_key)
 
 def generate_fit_summary(job_description, resume_text, model="gpt-3.5-turbo"):
