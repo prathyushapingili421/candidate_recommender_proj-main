@@ -2,6 +2,7 @@ import streamlit as st
 from utils.file_parser import parse_resume
 from utils.embeddings import get_embedding
 from utils.similarity import compute_similarity
+from utils.summarizer import generate_fit_summary
 
 st.set_page_config(page_title="Candidate Recommendation Engine", layout="wide")
 
@@ -56,4 +57,8 @@ if st.button("Run Recommendation Engine"):
         # Step 5: Display results
         st.write("### Top Matches")
         for candidate in resume_data[:10]:
-            st.write(f"**{candidate['name']}** — Similarity: {candidate['score']}%")
+            with st.expander(f"📄 {candidate['name']} — Similarity: {candidate['score']}%"):
+                st.markdown("**Why this candidate is a good fit:**")
+                summary = generate_fit_summary(job_description, candidate["text"])
+                st.write(summary)
+
