@@ -1,34 +1,33 @@
-# AI summary generator
-# AI summary generator
-import openai
+#AI Summarizer
 import os
+from openai import OpenAI
 from dotenv import load_dotenv
 
 load_dotenv()
-openai.api_key = os.getenv("OPENAI_API_KEY")
+api_key = os.getenv("open_api_key")
+client = OpenAI(api_key=api_key)
 
 def generate_fit_summary(job_description, resume_text, model="gpt-3.5-turbo"):
     """
-    Uses OpenAI GPT model to generate a short summary of why the candidate is a good fit.
+    Uses OpenAI API to generate a short summary explaining candidate fit.
     """
     prompt = f"""
     JOB DESCRIPTION:
     {job_description}
 
     CANDIDATE RESUME:
-    {resume_text[:3000]}  # Truncate to avoid hitting token limits
+    {resume_text[:3000]}
 
     TASK: Write 2-3 sentences explaining why this candidate is a good fit for the job.
     """
 
     try:
-        response = openai.ChatCompletion.create(
+        response = client.chat.completions.create(
             model=model,
             messages=[{"role": "user", "content": prompt}],
             max_tokens=150,
             temperature=0.7
         )
-        summary = response.choices[0].message['content'].strip()
-        return summary
+        return response.choices[0].message.content.strip()
     except Exception as e:
-        return f"[Error: {e}]"
+        return f"[Error generating summary: {e}]"
